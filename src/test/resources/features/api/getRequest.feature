@@ -1,5 +1,5 @@
 Feature: Get Request
 
   Scenario: Get all products
-    When I Get request
-    Then I expect 200 status code
+    When I GET request 'productList'
+    Then The status code is 200
