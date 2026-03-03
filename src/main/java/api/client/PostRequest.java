@@ -1,20 +1,20 @@
 package api.client;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import io.restassured.response.Response;
 
-public class PostRequest extends ApiClient {
+import static io.restassured.RestAssured.given;
+
+public class PostRequest implements ApiClient {
+
     @Override
-    public HttpResponse<String> send(RequestApi request) throws IOException, InterruptedException {
-        System.out.println("POST" + request.getUrl());
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create(request.getUrl()))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(request.getBody()))
-                .build();
-
-        return client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+    public Response send(ApiRequest request, String url) {
+        return given()
+                .contentType("application/x-www-form-urlencoded")
+                .formParams(request.getParams())
+                .when()
+                .post(url)
+                .then()
+                .extract()
+                .response();
     }
 }

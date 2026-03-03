@@ -1,19 +1,20 @@
 package api.client;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import io.restassured.response.Response;
 
-public class DeleteRequest extends ApiClient {
+import static io.restassured.RestAssured.given;
+
+public class DeleteRequest implements ApiClient {
+
     @Override
-    public HttpResponse<String> send(RequestApi request) throws IOException, InterruptedException {
-        System.out.println("DELETE" + request.getUrl());
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create(request.getUrl())).DELETE()
-                .build();
-
-
-        return client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+    public Response send(ApiRequest request, String url) {
+        return given()
+                .contentType("application/x-www-form-urlencoded")
+                .formParams(request.getParams())
+                .when()
+                .delete(url)
+                .then()
+                .extract()
+                .response();
     }
 }

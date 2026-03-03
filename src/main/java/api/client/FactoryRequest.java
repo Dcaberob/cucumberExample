@@ -1,16 +1,13 @@
 package api.client;
 
 public class FactoryRequest {
-    public static ApiClient make(String type) {
-        switch (type.toLowerCase()) {
-            case "put":
-                return new PutRequest();
-            case "post":
-                return new PostRequest();
-            case "delete":
-                return new DeleteRequest();
-            default:
-                return new GetRequest();
-        }
+    public static ApiClient make(String method) {
+        return switch (method.toUpperCase()) {
+            case "GET" -> new GetRequest();
+            case "POST" -> new PostRequest();
+            case "PUT" -> new PutRequest();
+            case "DELETE" -> new DeleteRequest();
+            default -> throw new IllegalArgumentException("Invalid method");
+        };
     }
 }

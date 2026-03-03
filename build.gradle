@@ -1,59 +1,38 @@
 plugins {
     id 'java'
-    id 'idea'
 }
-
-version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
+
 dependencies {
-    testImplementation 'io.cucumber:cucumber-java:7.9.0'
+
+    // Cucumber
+    testImplementation "io.cucumber:cucumber-java:7.15.0"
+    testImplementation "io.cucumber:cucumber-testng:7.15.0"
     testImplementation 'io.cucumber:cucumber-junit:7.9.0'
-    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
-    implementation group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version: '3.15.6.Final'
-    implementation group: 'org.jboss.resteasy', name: 'resteasy-client', version: '6.2.9.Final'
-    implementation group: 'org.jboss.resteasy', name: 'resteasy-multipart-provider', version: '6.2.9.Final'
-    implementation group: 'org.jboss.resteasy', name: 'resteasy-client-api', version: '6.2.9.Final'
-    implementation 'org.glassfish.jersey.core:jersey-client:3.0.2'
-    implementation 'org.glassfish.jersey.inject:jersey-hk2:3.0.2'
 
-    testImplementation 'io.rest-assured:rest-assured:6.0.0'
-    testImplementation 'io.rest-assured:json-path:6.0.0'
-    testImplementation 'io.rest-assured:xml-path:6.0.0'
-    testImplementation 'io.rest-assured:json-schema-validator:6.0.0'
-    testImplementation 'org.testng:testng:7.9.0'
+    testImplementation "io.cucumber:cucumber-java:7.15.0"
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:7.15.0"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.10.2"
+    // RestAssured
+    implementation "io.rest-assured:rest-assured:5.4.0"
+    testImplementation "io.rest-assured:json-path:5.4.0"
+    testImplementation "io.rest-assured:json-schema-validator:5.4.0"
 
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.21.0'
-    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-    implementation group: 'org.json', name: 'json', version: '20240303'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.23.1'
-    implementation group: 'io.qameta.allure', name: 'allure-cucumber7-jvm', version: '2.27.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    // TestNG
+    testImplementation "org.testng:testng:7.9.0"
 
+    // Logging
+    implementation 'org.apache.logging.log4j:log4j-core:2.23.1'
+
+    // Allure (optional)
+    testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.27.0'
+    testImplementation "org.testng:testng:7.9.0"
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:4.5.1'
-    testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 
 test {
     useJUnitPlatform()
-    systemProperty 'cucumber.options', '--plugin pretty --plugin html:build/reports/cucumber-reports.html ' +
-            '--plugin json:build/cucumber/cucumber.json ' +
-            '--glue com.erp.stepsDefinitions ' +
-            'src/test/resources/features'
-}
-
-task cucumber(type: JavaExec) {
-    dependsOn assemble, compileTestJava
-    main = 'io.cucumber.core.cli.Main'
-    classpath = sourceSets.test.runtimeClasspath
-    args = [
-            '--plugin', 'pretty',
-            '--plugin', 'html:build/reports/cucumber-reports.html',
-            '--plugin', 'json:build/cucumber/cucumber.json',
-            '--glue', 'com.erp.stepsDefinitions',
-            'src/test/resources/features'
-    ]
 }
